@@ -12,7 +12,7 @@ mCount = len(s.masses)
 if (mCount != 2 and mCount != 3):
     raise Exception("Only 2 or 3 bodies supported. Provided %s" % mCount)
 
-maxCntOfPoints = 2500
+maxCntOfPoints = 25000
 interval = 5
 deltaT = 0.01
 stepsPerPoint = 50

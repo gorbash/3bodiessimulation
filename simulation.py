@@ -22,11 +22,8 @@ class Simulation:
         return "Simulation got %d masses" % len(self.masses)
 
     def step(self, deltaT):
-        #print('Running simulation step for deltaT = %f' % deltaT);
         netForces = self.calculateNetForces()
-        #print('Net forces: %s' % netForces)
         accelarations = self.calculateAccelerations(netForces)
-        #print('Accelerations: %s' % accelarations)
         self.calculateAndUpdateV(accelarations, deltaT)
         self.calculateAndUpdateS(deltaT)
 
@@ -55,14 +52,13 @@ class Simulation:
 
     def addVectors(self, add1, add2):
         ret = []
-        for index in range(0, len(add1)):
-            ret.append(add1[index] + add2[index])
+        for (a1, a2) in zip(add1, add2):
+            ret.append(a1 + a2)
         return ret
 
     def calculateNetForce(self, mass, others):
         ret = [0, 0]
         for m in others:
-            #print('calculating netforce for %s from %s' % (mass, m))
             force = self.calculateForce(mass, m)
             ret = self.addVectors(ret, force)
         return ret
@@ -77,8 +73,8 @@ class Simulation:
 
     def calculateAccelerations(self, netForces):
         ret = []
-        for i in range(0, len(self.masses)):
-            acceleration = self.multipleVectorByConst(netForces[i], 1 / (self.masses[i].mass))
+        for (f, m) in zip(netForces, self.masses):
+            acceleration = self.multipleVectorByConst(f, 1 / (m.mass))
             ret.append(acceleration)
         return ret
 
