@@ -10,12 +10,13 @@ from setup import s
 mCount = len(s.masses)
 
 if (mCount != 2 and mCount != 3):
-    raise Exception("Only 2 or 3 bodies supported. Provided %s" % mCount)
+    raise Exception("Only 2 or 3 bodies supported. Provided %s." % mCount)
 
 maxCntOfPoints = 25000
-interval = 5
+interval = 1
 deltaT = 0.01
-stepsPerPoint = 50
+stepsPerPoint = 200
+refToMass=False
 
 
 def data_gen(t=0):
@@ -27,15 +28,24 @@ def data_gen(t=0):
         t += 0.01
         for i in range(0, stepsPerPoint):
             s.step(deltaT)
-        if (mCount == 3):
-            yield s.masses[0].s + s.masses[1].s + s.masses[2].s
+        if (refToMass):
+            if (mCount == 3):
+                yield s.addVectors(s.masses[0].s, s.multipleVectorByConst(s.masses[0].s, -1)) + \
+                      s.addVectors(s.masses[1].s, s.multipleVectorByConst(s.masses[0].s, -1)) + \
+                      s.addVectors(s.masses[2].s, s.multipleVectorByConst(s.masses[0].s, -1))
+            else:
+                yield s.addVectors(s.masses[0].s, s.multipleVectorByConst(s.masses[0].s, -1)) + \
+                      s.addVectors(s.masses[1].s, s.multipleVectorByConst(s.masses[0].s, -1))
         else:
-            yield s.masses[0].s + s.masses[1].s
+            if (mCount == 3):
+                yield s.masses[0].s + s.masses[1].s + s.masses[2].s
+            else:
+                yield s.masses[0].s + s.masses[1].s
 
 
 def init():
-    ax.set_ylim(-1.1, 1.1)
-    ax.set_xlim(-1.1, 1.1)
+    ax.set_ylim(-5, 5)
+    ax.set_xlim(-5, 5)
     del xdata[:]
     del ydata[:]
     del x2data[:]
