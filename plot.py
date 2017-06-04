@@ -14,8 +14,8 @@ if (mCount != 2 and mCount != 3):
 
 maxCntOfPoints = 25000
 interval = 1
-deltaT = 0.01
-stepsPerPoint = 200
+deltaT = 0.001
+stepsPerPoint = 1000
 refToMass=False
 
 
@@ -28,6 +28,8 @@ def data_gen(t=0):
         t += 0.01
         for i in range(0, stepsPerPoint):
             s.step(deltaT)
+
+
         if (refToMass):
             if (mCount == 3):
                 yield s.addVectors(s.masses[0].s, s.multipleVectorByConst(s.masses[0].s, -1)) + \
@@ -57,11 +59,19 @@ def init():
 
 fig, ax = plt.subplots()
 
+
+initList = []
+for ind in range(0, mCount):
+    initList.append([])
+    initList.append([])
+
+lines = ax.plot(*initList)
+
 if (mCount == 3):
-    lines = ax.plot([], [], [], [], [], [])
     x3data, y3data = [], []
-else:
-    lines = ax.plot([], [], [], [])
+
+
+
 
 xdata, ydata, x2data, y2data = [], [], [], []
 ax.grid()
@@ -112,10 +122,11 @@ def run(data):
         ax.set_ylim(ratio * ymin, ymax)
         ax.figure.canvas.draw()
 
-    lines[0].set_data(xdata, ydata)
-    lines[1].set_data(x2data, y2data)
+
+    lines[0].set_data((xdata), (ydata))
+    lines[1].set_data((x2data), (y2data))
     if (mCount == 3):
-        lines[2].set_data(x3data, y3data)
+        lines[2].set_data((x3data), (y3data))
 
     return lines[0],
 

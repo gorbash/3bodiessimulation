@@ -5,17 +5,17 @@ from simulation import  Mass
 # initial location (x,  y)
 # initial velocity (vx, vy)
 
-m1 = Mass(1,
-          [5,       0],
-          [0.01,     -0.01])
-m2 = Mass(1,
-          [-5,       0],
-          [-0.01,    0])
-m3 = Mass(1,
-          [0,       5],
-          [0.01,       0.2])
+m2 = Mass(1000,
+          [0,       40],
+          [0.5,     0])
+m1 = Mass(1000,
+          [0,       0],
+          [-0.5,    0])
+m3 = Mass(100,
+          [200,       20],
+          [0,       -1])
 
-s = Simulation([m1, m2])
+s = Simulation([m1, m2, m3])
 
 
 

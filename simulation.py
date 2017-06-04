@@ -14,6 +14,8 @@ class Mass:
 
 class Simulation:
     G = 0.1
+    totalTime=0
+    steps = 0
 
     def __init__(self, masses):
         self.masses = masses
@@ -26,6 +28,11 @@ class Simulation:
         accelarations = self.calculateAccelerations(netForces)
         self.calculateAndUpdateV(accelarations, deltaT)
         self.calculateAndUpdateS(deltaT)
+        self.totalTime += deltaT
+        self.steps += 1
+        if (self.steps%10000 == 0):
+            print("Total time: %s steps: %s" % (self.totalTime, self.steps))
+
 
 
     def calculateVectorLen(self, forceVec):
@@ -38,6 +45,7 @@ class Simulation:
         r = self.addVectors(source.s, self.multipleVectorByConst(mass.s, -1))
         rLen = self.calculateVectorLen(r)
         if rLen == 0:
+            print("Got the same location for %s and %s" % (mass, source))
             return [0, 0]
         forceValue = (self.G*(mass.mass * source.mass)) / (rLen*rLen)
         ret = [(r[0] * forceValue)/rLen, (r[1] * forceValue)/rLen]
