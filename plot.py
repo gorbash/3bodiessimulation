@@ -29,6 +29,7 @@ def data_gen(t=0):
         for i in range(0, stepsPerPoint):
             s.step(deltaT)
 
+        
 
         if (refToMass):
             if (mCount == 3):
