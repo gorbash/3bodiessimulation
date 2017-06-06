@@ -9,8 +9,13 @@ class Mass:
         self.mass = float(mass)
 
     def __str__(self):
-        return "mass = %f s = [%f %f] v = [%f %f]" % (self.mass, self.s[0], self.s[1], self.v[0], self.v[1])
+        return "mass = %0.2f s = [%0.3f %0.3f] v = [%0.3f %0.3f] |v|=%0.3f" % (self.mass, self.s[0], self.s[1], self.v[0], self.v[1], calculateVectorLen(self.v))
 
+def calculateVectorLen(forceVec):
+    ret = 0
+    for el in forceVec:
+        ret += el*el
+    return sqrt(ret)
 
 class Simulation:
     G = 0.1
@@ -19,6 +24,7 @@ class Simulation:
 
     def __init__(self, masses):
         self.masses = masses
+        self.reportState()
 
     def __str__(self):
         return "Simulation got %d masses" % len(self.masses)
@@ -30,20 +36,14 @@ class Simulation:
         self.calculateAndUpdateS(deltaT)
         self.totalTime += deltaT
         self.steps += 1
-        if (self.steps%10000 == 0):
+        if (self.steps%50000 == 0):
             print("Total time: %s steps: %s" % (self.totalTime, self.steps))
+            self.reportState()
 
-
-
-    def calculateVectorLen(self, forceVec):
-        ret = 0
-        for el in forceVec:
-            ret += el*el
-        return sqrt(ret)
 
     def calculateForce(self, mass, source):
         r = self.addVectors(source.s, self.multipleVectorByConst(mass.s, -1))
-        rLen = self.calculateVectorLen(r)
+        rLen = calculateVectorLen(r)
         if rLen == 0:
             print("Got the same location for %s and %s" % (mass, source))
             return [0, 0]
@@ -95,6 +95,11 @@ class Simulation:
         for mass in self.masses:
             deltaS = self.multipleVectorByConst(mass.v, deltaT)
             mass.s = self.addVectors(mass.s, deltaS)
+
+    def reportState(self):
+        for mass in self.masses:
+            print(mass)
+
 
 
 
