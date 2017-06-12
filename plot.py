@@ -10,11 +10,11 @@ from setup import s
 mCount = len(s.masses)
 
 
-maxCntOfPoints = 25000
+maxCntOfPoints = 10000
 interval = 1
-deltaT = 0.001
-stepsPerPoint = 1000
-refToMass = False
+deltaT = 0.0000001
+stepsPerPoint = 100000
+refToMass = True
 
 
 def data_gen(t=0):
