@@ -12,7 +12,7 @@ mCount = len(s.masses)
 
 maxCntOfPoints = 10000
 interval = 1
-deltaT = 0.0000001
+deltaT = 0.000001
 stepsPerPoint = 100000
 refToMass = True
 
